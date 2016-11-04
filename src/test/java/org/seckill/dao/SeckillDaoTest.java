@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -41,7 +42,12 @@ public class SeckillDaoTest {
 
     @Test
     public void reduceNumber() throws Exception {
-
+        /**
+         *  update seckill set number =number-1 where seckill_id=? and start_time <= ? AND end_time >= ? AND number > 0
+         */
+        Date killTime=new Date();
+        int result= seckillDao.reduceNumber(1000L,killTime);
+        System.out.println("更新结果 "+result);
     }
 
 }
