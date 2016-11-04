@@ -5,6 +5,8 @@ import org.seckill.dao.SuccessKilledDao;
 import org.seckill.dto.Exposer;
 import org.seckill.dto.SeckillExecution;
 import org.seckill.entity.Seckill;
+import org.seckill.entity.SuccessKilled;
+import org.seckill.enums.SeckillStateEnum;
 import org.seckill.exception.RepeatKillException;
 import org.seckill.exception.SeckillCloseException;
 import org.seckill.exception.SeckillException;
@@ -57,7 +59,35 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     public SeckillExecution executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException, RepeatKillException, SeckillCloseException {
-        return null;
+        if(md5==null||!md5.equals(getMD5(seckillId))){
+            throw new SeckillException("seckill data rewrite");
+        }
+        //执行秒杀逻辑：减库存，记录购买行为
+        try{
+            int updateCount=seckillDao.reduceNumber(seckillId,new Date());
+            if(updateCount<=0){
+                //秒杀失败
+                throw new SeckillCloseException("seckill is closed");
+            }else {
+                //记录购买行为
+                int insertCount=successKilledDao.insertSuccessKilled(seckillId,userPhone,0);
+                if(insertCount<=0){
+                    throw new RepeatKillException("seckill repeated");
+                }else {
+                    SuccessKilled successKilled=successKilledDao.queryByIdWithSeckill(seckillId,userPhone);
+                    return new SeckillExecution(seckillId, SeckillStateEnum.SUCCESS,successKilled);
+                }
+            }
+        }catch (SeckillCloseException e1){
+            throw e1;
+        }catch (RepeatKillException e2){
+            throw e2;
+        }
+        catch (Exception e){
+            logger.error(e.getMessage(),e);
+            throw new SeckillException("seckill inner error"+e.getMessage());//将所有检查型异常转换为运行期异常
+        }
+
     }
 
     private String getMD5(long seckillId){
@@ -65,4 +95,6 @@ public class SeckillServiceImpl implements SeckillService {
         String md5= DigestUtils.md5DigestAsHex(base.getBytes());
         return md5;
     }
+
+
 }
