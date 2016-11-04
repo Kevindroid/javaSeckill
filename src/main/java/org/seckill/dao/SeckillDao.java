@@ -1,5 +1,6 @@
 package org.seckill.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.seckill.entity.Seckill;
 
 import java.util.Date;
@@ -30,5 +31,5 @@ public interface SeckillDao {
      * @param limit
      * @return
      */
-    List<Seckill> queryAll(int offent,int limit);
+    List<Seckill> queryAll(@Param(value = "offent") int offent,@Param(value = "limit") int limit);
 }

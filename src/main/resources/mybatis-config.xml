@@ -10,8 +10,8 @@
         <!-- 使用jdbc的getGeneratedKeys获取自增主键值-->
         <setting name="useGeneratedKeys" value="true"/>
         <!--使用列别名替换别名 默认true-->
-        <setting name="useCloumnLabel" value="true"/>
+        <setting name="useColumnLabel" value="true"/>
         <!--开启驼峰命名规范-->
-        <setting name="mapUnderscoreCamelCase" value="true"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 </configuration>

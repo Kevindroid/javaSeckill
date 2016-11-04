@@ -13,7 +13,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
-      <scope>test</scope>
+
     </dependency>
 
     <!-- 补全项目依赖-->
@@ -42,7 +42,6 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>5.1.24</version>
-      <scope>runtime</scope><!--运行时使用-->
     </dependency>
     <dependency>
       <groupId>c3p0</groupId>
