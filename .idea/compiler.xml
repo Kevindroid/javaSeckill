@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="seckill" />
+        <module name="javaSeckill" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="seckill" target="1.5" />
+      <module name="javaSeckill" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

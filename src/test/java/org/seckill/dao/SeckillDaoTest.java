@@ -28,7 +28,7 @@ public class SeckillDaoTest {
 
     @Test
     public void queryById() throws Exception {
-        long id=1000;
+        long id=1;
         Seckill seckill=seckillDao.queryById(id);
         System.out.println(seckill.getName());
         System.out.println(seckill);

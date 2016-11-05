@@ -13,6 +13,8 @@ import org.seckill.exception.SeckillException;
 import org.seckill.service.SeckillService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
@@ -22,8 +24,12 @@ import java.util.List;
 /**
  * Created by Kevin on 2016/11/4.
  */
+//@Component @Service @Dao @Controller
+
+@Service
 public class SeckillServiceImpl implements SeckillService {
 
+    //注入Service依赖，还有@Autowired
     @Resource
     private SeckillDao seckillDao;
     @Resource
@@ -58,6 +64,7 @@ public class SeckillServiceImpl implements SeckillService {
         return new Exposer(true,md5,seckillId);
     }
 
+    @Transactional
     public SeckillExecution executeSeckill(long seckillId, long userPhone, String md5) throws SeckillException, RepeatKillException, SeckillCloseException {
         if(md5==null||!md5.equals(getMD5(seckillId))){
             throw new SeckillException("seckill data rewrite");
