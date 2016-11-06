@@ -70,7 +70,7 @@ public class SeckillServiceImplTest {
      * 将判断秒杀是否开启和执行秒杀合并测试，可以重复执行
      */
     public void testSeckillLogic() throws Exception{
-        long id=2;
+        long id=2l;
         Exposer exposer = seckillService.exportSeckillUrl(id);
         if(exposer.isExposed()){
             logger.info("exposer={}", exposer);
@@ -84,6 +84,18 @@ public class SeckillServiceImplTest {
             }
         }else {
             logger.warn("exposer={}",exposer);
+        }
+    }
+
+    @Test
+    public void executeSeckillProcedure(){
+        long seckillId=3l;
+        long phone=55555678910l;
+        Exposer exposer=seckillService.exportSeckillUrl(seckillId);
+        if(exposer.isExposed()){
+            String md5=exposer.getMd5();
+            SeckillExecution execution=seckillService.executeSeckillProducer(seckillId,phone,md5);
+            logger.info(execution.getStateInfo());
         }
     }
 

@@ -74,7 +74,7 @@ var seckill = {
             seckillBox.countdown(killTime,function (event) {
                 var format=event.strftime('秒杀倒计时:%D天 %H时 %M分 %S秒');
                 seckillBox.html(format);
-                //时间计时完后回调事件
+                //时间计时完后回调事件*************
             }).on('finish.countdown',function () {
                 //获取秒杀地址，控制显示逻辑，执行秒杀
                 seckill.handleSeckillKill(seckillId,node);
