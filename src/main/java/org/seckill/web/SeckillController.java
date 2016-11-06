@@ -7,7 +7,6 @@ import org.seckill.entity.Seckill;
 import org.seckill.enums.SeckillStateEnum;
 import org.seckill.exception.RepeatKillException;
 import org.seckill.exception.SeckillCloseException;
-import org.seckill.exception.SeckillException;
 import org.seckill.service.SeckillService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +53,7 @@ public class SeckillController {
     //ajax接口返回类型是json，设置produces解决json中的乱码问题
     @RequestMapping(value = "/{seckillId}/exposer",method = RequestMethod.POST,
                     produces = {"application/json;charset=UTF-8"})
-    public @ResponseBody SeckillResult<Exposer> exposer(Long seckillId){
+    public @ResponseBody SeckillResult<Exposer> exposer(@PathVariable Long seckillId){
         SeckillResult<Exposer> result;
         try {
             Exposer exposer=seckillService.exportSeckillUrl(seckillId);
@@ -80,20 +79,20 @@ public class SeckillController {
             return new SeckillResult<SeckillExecution>(true,execution);
         }catch (RepeatKillException e){
             SeckillExecution execution=new SeckillExecution(seckillId, SeckillStateEnum.REPEAT_KILL);
-            return new SeckillResult<SeckillExecution>(false,execution);
+            return new SeckillResult<SeckillExecution>(true,execution);
         }catch (SeckillCloseException e){
             SeckillExecution execution=new SeckillExecution(seckillId,SeckillStateEnum.END);
-            return new SeckillResult<SeckillExecution>(false,execution);
+            return new SeckillResult<SeckillExecution>(true,execution);
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             SeckillExecution execution=new SeckillExecution(seckillId,SeckillStateEnum.INNER_ERROR);
-            return new SeckillResult<SeckillExecution>(false,execution);
+            return new SeckillResult<SeckillExecution>(true,execution);
         }
 
     }
 
     @RequestMapping(value = "/time/now",method = RequestMethod.GET)
-    public SeckillResult<Long> time(){
+    public @ResponseBody SeckillResult<Long> time(){
         Date now=new Date();
         return new SeckillResult<Long>(true,now.getTime());
     }
